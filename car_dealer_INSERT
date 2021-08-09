@@ -1,0 +1,204 @@
+--SALESPERSON
+INSERT INTO salesperson(
+	salesperson_id,
+	first_name,
+	last_name
+) VALUES(
+	1,
+	'Dwight',
+	'Schrute'
+);
+INSERT INTO salesperson(
+	first_name,
+	last_name
+) VALUES(
+	'Creed',
+	'Bratton'
+);
+
+SELECT *
+FROM salesperson
+-------------------------------------------
+--FUNCTION TO ADD CUSTOMERS
+CREATE OR REPLACE FUNCTION add_cust(
+	custfirst VARCHAR(50),
+	custlast VARCHAR(50),
+	cred_rate INTEGER
+)
+RETURNS void
+LANGUAGE plpgsql
+AS
+$MAIN$
+BEGIN
+	INSERT INTO customer(first_name, last_name, credit_rating)
+	VALUES(custfirst, custlast, cred_rate);
+END;
+$MAIN$
+------
+SELECT add_cust('Michael', 'Scott', 450)
+SELECT add_cust('Jim', 'Halper', 680)
+SELECT add_cust('Pam', 'Beesly', 740)
+
+SELECT *
+FROM customer
+--------------------------------------
+
+--FUNCTION car
+CREATE OR REPLACE FUNCTION add_car(
+	carnum INTEGER,
+	make VARCHAR(50),
+	model VARCHAR(50),
+	color VARCHAR(50),
+	makeyear INTEGER,
+	carprice NUMERIC(10,2),
+	newcar BOOLEAN,
+	salespersonid INTEGER,
+	customerid INTEGER
+)
+RETURNS void
+LANGUAGE plpgsql
+AS
+$MAIN$
+BEGIN
+	INSERT INTO car(car_id, car_make, car_model, car_color, car_year, car_cost, car_new, salesperson_id, customer_id)
+	VALUES(carnum, make, model, color, makeyear, carprice, newcar, salespersonid, customerid);
+END;
+$MAIN$
+---
+
+SELECT add_car(1, 'Toyota', 'Corolla', 'Silver', 2020, 18000, False, 1, 2)
+SELECT add_car(2, 'Lexus', 'RC 350 F Sport', 'Black', 2021, 48000, True, 2, 1)
+
+SELECT *
+FROM car
+---------------------------------
+
+--mechanic
+INSERT INTO mechanic(
+	first_name,
+	last_name,
+	cars_serviced
+) VALUES(
+	'Kevin',
+	'Malone',
+	1
+);
+---
+INSERT INTO mechanic(
+	first_name,
+	last_name,
+	cars_serviced
+) VALUES(
+	'Andy',
+	'Bernard',
+	23
+);
+
+SELECT *
+FROM mechanic
+
+-----------------------------
+--car parts
+INSERT INTO carparts(
+	part_name,
+	part_quantity,
+	part_cost,
+	car_id
+) VALUES(
+	'battery',
+	1,
+	300,
+	1
+);
+
+INSERT INTO carparts(
+	part_name,
+	part_quantity,
+	part_cost,
+	car_id
+) VALUES(
+	'fuse',
+	1,
+	80,
+	1
+);
+
+SELECT *
+FROM carparts
+
+-- DELETE FROM carparts
+-- WHERE part_id = 2
+---------------------------
+--car_mechanic
+INSERT INTO car_mechanic(
+	car_id,
+	mechanic_id
+) VALUES (
+	1,
+	1	
+);
+
+INSERT INTO car_mechanic(
+	car_id,
+	mechanic_id
+) VALUES (
+	2,
+	2	
+);
+SELECT *
+FROM car_mechanic
+-------------------------
+--invoice
+INSERT INTO invoice(
+	salesperson_id,
+	car_id,
+	customer_id
+) VALUES(
+	1,
+	2,
+	2
+);
+
+INSERT INTO invoice(
+	salesperson_id,
+	car_id,
+	customer_id
+) VALUES(
+	1,
+	1,
+	1
+);
+SELECT *
+FROM invoice
+------------------------
+--service record
+INSERT INTO service_recordticket(
+	ticket_cost,
+	part_id,
+	mechanic_id,
+	car_id,
+	customer_id
+) VALUES(
+	900,
+	1,
+	2,
+	1,
+	2
+);
+
+INSERT INTO service_recordticket(
+	ticket_cost,
+	part_id,
+	mechanic_id,
+	car_id,
+	customer_id
+) VALUES(
+	900,
+	1,
+	1,
+	2,
+	1
+);
+
+SELECT *
+FROM service_recordticket
